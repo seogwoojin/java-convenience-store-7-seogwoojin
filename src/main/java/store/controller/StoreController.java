@@ -9,6 +9,11 @@ import store.model.Store;
 import store.view.InputView;
 
 public class StoreController {
+    private static final int NAME_LOC = 0;
+    private static final int PRICE_LOC = 1;
+    private static final int QUANTITY_LOC = 2;
+    private static final int PROMOTION_LOC = 3;
+
     private static final String NULL_STRING = "null";
     private final InputView inputView;
     private final OrderController orderController;
@@ -33,26 +38,25 @@ public class StoreController {
     private Store makeStore(List<String[]> products, PromotionGroup promotionGroup) {
         Store store = new Store();
         for (String[] productDetail : products) {
-            Product product;
-            String productName = productDetail[0];
-            String productPrice = productDetail[1];
-            String productQuantity = productDetail[2];
-            String productPromotion = productDetail[3];
-            Optional<Promotion> optionalPromotion = getProduct(productPromotion, promotionGroup);
-
-            if (store.isDuplicate(productName)) {
-                product = store.getProductByName(productName);
-                product.updateQuantity(productQuantity, optionalPromotion);
-            } else {
-                product = new Product(productDetail);
-                product.updateQuantity(productQuantity, optionalPromotion);
-                store.addProduct(product);
-            }
+            Optional<Promotion> optionalPromotion = getPromotion(productDetail[PROMOTION_LOC], promotionGroup);
+            updateOrCreateProduct(productDetail, optionalPromotion, store);
         }
         return store;
     }
 
-    private Optional<Promotion> getProduct(String productPromotion, PromotionGroup promotionGroup) {
+    private void updateOrCreateProduct(String[] productDetail, Optional<Promotion> optionalPromotion, Store store) {
+        String productName = productDetail[NAME_LOC];
+        if (store.isDuplicate(productName)) {
+            Product product = store.getProductByName(productName);
+            product.updateQuantity(productDetail[QUANTITY_LOC], optionalPromotion);
+            return;
+        }
+        Product newProduct = new Product(productName, productDetail[PRICE_LOC]);
+        newProduct.updateQuantity(productDetail[QUANTITY_LOC], optionalPromotion);
+        store.addProduct(newProduct);
+    }
+
+    private Optional<Promotion> getPromotion(String productPromotion, PromotionGroup promotionGroup) {
         if (productPromotion.equals(NULL_STRING)) {
             return Optional.empty();
         }

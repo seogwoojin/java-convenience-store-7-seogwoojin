@@ -13,9 +13,9 @@ public class Product {
     private int promotionQuantity = 0;
     private int normalQuantity = 0;
 
-    public Product(String[] productDetails) {
-        this.name = productDetails[NAME_LOC];
-        this.price = Validator.validateNumber(productDetails[PRICE_LOC]);
+    public Product(String productName, String productPrice) {
+        this.name = productName;
+        this.price = Validator.validateNumber(productPrice);
     }
 
     public String getName() {
@@ -49,7 +49,7 @@ public class Product {
             return NO_QUANTITY;
         }
 
-        return String.format("%d개", quantity);
+        return String.format("%,d개", quantity);
     }
 
     public Optional<Promotion> getPromotion() {
