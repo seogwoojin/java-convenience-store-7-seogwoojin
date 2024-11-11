@@ -1,5 +1,7 @@
 package store.dto;
 
+import static store.common.ExceptionMessage.ORDER_VALIDATION_ERROR;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import store.common.Validator;
@@ -30,7 +32,7 @@ public class OrderDto {
                     matcher.group(1),
                     matcher.group(2)}; // matcher.group(1) is name, matcher.group(2) is quantity
         }
-        throw new IllegalArgumentException("Input string format is invalid: " + string);
+        throw new IllegalArgumentException(ORDER_VALIDATION_ERROR + string);
     }
 
 
