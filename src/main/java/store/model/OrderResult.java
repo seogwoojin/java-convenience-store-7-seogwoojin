@@ -7,7 +7,6 @@ public class OrderResult {
     private final int nonPromotionQuantity;
     private final int freeGiftQuantity; //promotionApplyQuantity 에도 포함됨
 
-
     public OrderResult(String productName, int productPrice, int promotionApplyQuantity, int nonPromotionQuantity,
                        int freeGiftQuantity) {
         this.productName = productName;

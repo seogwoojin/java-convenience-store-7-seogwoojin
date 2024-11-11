@@ -6,24 +6,13 @@ public class PromotionService {
         if (promotionQuantity <= orderQuantity) {
             return 0;
         }
-
-        int remainQuantity = promotionQuantity - orderQuantity;
-
         int buyNum = promotion.getBuyNum();
         int getNum = promotion.getGetNum();
-
         int remain = orderQuantity % (buyNum + getNum);
 
         if (!isSatisfyBuyCount(remain, buyNum)) {
             return 0;
         }
-        // get 조건 충족 시 실행
-//        int userCanPlusQuantity = getNum - (remain - buyNum);
-//
-//        if (remainQuantity < userCanPlusQuantity) {
-//            return 0;
-//        }
-
         return getNum;
     }
 
